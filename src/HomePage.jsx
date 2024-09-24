@@ -3,16 +3,16 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCow,
-  faHorse,
   faBacon,
   faStethoscope,
   faHospital,
   faHeart,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import img3 from "../public/img/img3.jpg";
 import img4 from "../public/img/img4.jpg";
-import img5 from "../public/img/img5.jpg";
+import img5 from "../public/img/img7.jpg";
 
 const HomePage = () => {
   const animales = [
@@ -22,13 +22,14 @@ const HomePage = () => {
       imagen: img3,
       descripcion:
         "¿Quieres darle un chequeo a tu vaca? Nuestros expertos están listos para atenderla.",
+      ruta: "/cow",
     },
     {
-      nombre: "Caballo",
-      icono: faHorse,
+      nombre: "Cabra",
       imagen: img5,
       descripcion:
-        "Mantén a tu caballo en óptimas condiciones con nuestros servicios veterinarios especializados.",
+        "Mantén a tu cabra en óptimas condiciones con nuestros servicios veterinarios especializados.",
+      ruta: "/goat",
     },
     {
       nombre: "Cerdo",
@@ -36,6 +37,7 @@ const HomePage = () => {
       imagen: img4,
       descripcion:
         "Cuida la salud de tus cerdos con nuestro equipo de expertos en porcicultura.",
+      ruta: "/pig",
     },
   ];
 
@@ -120,9 +122,11 @@ const HomePage = () => {
                     className="text-3xl text-red-500 transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
-                <button className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition-colors duration-300">
-                  Seleccionar
-                </button>
+                <Link to={animal.ruta}>
+                  <button className="w-full py-2 px-4 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition-colors duration-300">
+                    Seleccionar
+                  </button>
+                </Link>
               </div>
             </motion.div>
           ))}
@@ -133,17 +137,19 @@ const HomePage = () => {
             transition={{ delay: 0.2 * (animales.length + 1), duration: 0.5 }}
           ></motion.div>
         </div>
-        <div className="flex items-center justify-end mt-12 cursor-pointer group">
-          <div className="relative overflow-hidden rounded-full bg-green-100 p-4 transition-all duration-300 group-hover:bg-green-200">
-            <FontAwesomeIcon
-              icon={faPlus}
-              className="text-5xl text-green-500 group-hover:text-green-600 transition-colors duration-300 transform group-hover:rotate-90"
-            />
+        <Link to="/other">
+          <div className="flex items-center justify-end mt-12 cursor-pointer group">
+            <div className="relative overflow-hidden rounded-full bg-green-100 p-4 transition-all duration-300 group-hover:bg-green-200">
+              <FontAwesomeIcon
+                icon={faPlus}
+                className="text-5xl text-green-500 group-hover:text-green-600 transition-colors duration-300 transform group-hover:rotate-90"
+              />
+            </div>
+            <span className="ml-4 text-3xl font-bold text-gray-800 group-hover:text-green-600 transition-colors duration-300 border-b-2 border-transparent group-hover:border-green-500">
+              Agregar Otro
+            </span>
           </div>
-          <span className="ml-4 text-3xl font-bold text-gray-800 group-hover:text-green-600 transition-colors duration-300 border-b-2 border-transparent group-hover:border-green-500">
-            Agregar Otro
-          </span>
-        </div>
+        </Link>
       </main>
     </div>
   );

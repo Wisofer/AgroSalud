@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDashboard,
@@ -6,42 +6,89 @@ import {
   faChartPie,
   faCog,
   faSignOutAlt,
+  faCow,
+  faPiggyBank,
+  faHorse,
+  faPaw,
+  faHeartbeat,
+  faClipboardCheck,
+  faComments,
+  faRobot,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
+  const [animalData, setAnimalData] = useState({
+    vacas: 0,
+    cerdos: 0,
+    cabras: 0,
+    otros: 0,
+  });
+
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+
+  useEffect(() => {
+    // Aquí simularemos la obtención de datos de los formularios
+    // En una aplicación real, esto vendría de una API o base de datos
+    const fetchData = async () => {
+      // Simulación de datos
+      const data = {
+        vacas: 15,
+        cerdos: 8,
+        cabras: 12,
+        otros: 5,
+      };
+      setAnimalData(data);
+    };
+
+    fetchData();
+  }, []);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
       <motion.aside
-        className="bg-green-700 w-64 text-white p-6"
-        initial={{ x: -100 }}
+        className={`bg-green-700 text-white p-6 transition-all duration-300 ease-in-out ${
+          sidebarOpen ? "w-64" : "w-16"
+        }`}
+        initial={{ x: sidebarOpen ? 0 : -100 }}
         animate={{ x: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="text-3xl font-bold mb-8">AgroSalud</h2>
-        <nav className="space-y-6">
-          <Link to="/dashboard" className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faDashboard} />
-            <span>Dashboard</span>
-          </Link>
-          <Link to="/profile" className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faUser} />
-            <span>Profile</span>
-          </Link>
-          <Link to="/analytics" className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faChartPie} />
-            <span>Analytics</span>
-          </Link>
-          <Link to="/settings" className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faCog} />
-            <span>Settings</span>
-          </Link>
-          <Link to="/logout" className="flex items-center space-x-3">
-            <FontAwesomeIcon icon={faSignOutAlt} />
-            <span>Logout</span>
-          </Link>
+        <div className="flex justify-between items-center mb-8">
+          {sidebarOpen && <h2 className="text-3xl font-bold">AgroSalud</h2>}
+          <button
+            className="text-white hover:text-green-200 transition-colors duration-200"
+            onClick={toggleSidebar}
+          >
+            <FontAwesomeIcon icon={sidebarOpen ? faSignOutAlt : faBars} />
+          </button>
+        </div>
+        <nav className="space-y-4">
+          {[
+            { to: "/dashboard/perfil-animal", icon: faPaw, text: "Perfil del Animal" },
+            { to: "/dashboard/gestion-salud-animal", icon: faDashboard, text: "Gestión" },
+            { to: "/dashboard/monitoreo-bienestar-animal", icon: faHeartbeat, text: "Bienestar Animal" },
+            { to: "/dashboard/monitoreo-bienestar-animal", icon: faClipboardCheck, text: "Monitoreo" },
+            { to: "/dashboard/comunicacion-coordinacion", icon: faComments, text: "Comunicación" },
+            { to: "/dashboard/comunicacion-coordinacion", icon: faChartPie, text: "Coordinación" },
+            { to: "/dashboard/analisis-automatizacion-datos", icon: faRobot, text: "Análisis de Datos" },
+          ].map((item, index) => (
+            <Link
+              key={index}
+              to={item.to}
+              className="flex items-center space-x-3 p-2 rounded-lg hover:bg-green-600 transition-colors duration-200"
+            >
+              <FontAwesomeIcon icon={item.icon} className="text-xl" />
+              {sidebarOpen && <span>{item.text}</span>}
+            </Link>
+          ))}
         </nav>
       </motion.aside>
 
@@ -50,47 +97,14 @@ const Dashboard = () => {
         <header className="bg-white shadow p-4 flex justify-between">
           <h1 className="text-xl font-bold">Dashboard</h1>
           <div className="flex space-x-4 items-center">
-            <p className="text-gray-600">Hello, User</p>
-            <button className="text-red-500">Logout</button>
+            <p className="text-gray-600">Hola, Usuario</p>
+            <button className="text-red-500">Cerrar sesión</button>
           </div>
         </header>
 
         {/* Content Area */}
         <main className="p-6">
-          <h2 className="text-2xl font-bold mb-6">Overview</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
-              <h3 className="text-xl font-semibold">Animals Checked Today</h3>
-              <p className="text-3xl font-bold mt-2">25</p>
-            </motion.div>
-
-            <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h3 className="text-xl font-semibold">Scheduled Appointments</h3>
-              <p className="text-3xl font-bold mt-2">10</p>
-            </motion.div>
-
-            <motion.div
-              className="bg-white p-6 rounded-lg shadow-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <h3 className="text-xl font-semibold">Pending Reports</h3>
-              <p className="text-3xl font-bold mt-2">5</p>
-            </motion.div>
-          </div>
-
-          {/* Additional components can go here, like tables or charts */}
+          <Outlet />
         </main>
       </div>
     </div>
