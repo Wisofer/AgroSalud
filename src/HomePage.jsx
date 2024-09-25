@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import img3 from "../public/img/img3.jpg";
 import img4 from "../public/img/img4.jpg";
 import img5 from "../public/img/img7.jpg";
+import img1 from "../public/img/img1.jpg";
 
 const HomePage = () => {
   const animales = [
@@ -50,19 +51,40 @@ const HomePage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <motion.h1 className="text-7xl font-bold text-center text-green-700 font-montserrat tracking-wide">
-            {Array.from("Bienvenido a AgroSalud").map((letra, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 * index, duration: 0.3 }}
-                className="inline-block hover:text-green-500 transition-colors duration-300 mx-1"
-              >
-                {letra === " " ? "\u00A0" : letra}
-              </motion.span>
-            ))}
-          </motion.h1>
+          <div className="flex flex-col items-center">
+            <motion.div
+              className="relative w-32 h-32 mb-6"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
+              <motion.img
+                src={img1}
+                alt="Logo de AgroSalud"
+                className="w-full h-full rounded-full object-cover shadow-lg"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.3 }}
+              />
+              <motion.div
+                className="absolute inset-0 border-4 border-green-500 rounded-full"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              />
+            </motion.div>
+            <motion.h1 className="text-7xl font-bold text-center text-green-700 font-montserrat tracking-wide">
+              {Array.from("Bienvenido a AgroSalud").map((letra, index) => (
+                <motion.span
+                  key={index}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.3 }}
+                  className="inline-block hover:text-green-500 transition-colors duration-300 mx-1"
+                >
+                  {letra === " " ? "\u00A0" : letra}
+                </motion.span>
+              ))}
+            </motion.h1>
+          </div>
         </motion.div>
         <motion.p
           className="text-2xl text-center text-gray-600 mb-12"
