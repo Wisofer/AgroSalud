@@ -13,6 +13,7 @@ import CommunicationCoordination from './components/CommunicationCoordination/Co
 import DataAutomationAnalysis from './components/DataAutomationAnalysis/DataAutomationAnalysis.jsx'
 import AnimalProfile from './components/AnimalProfile/AnimalProfile.jsx'
 import './index.css'
+import Inicio from './components/Home/Inicio.jsx'
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: <Dashboard />,
     children: [
+      {
+        path: "",
+        element: <Inicio />
+      },
       {
         path: 'gestion-salud-animal',
         element: <AnimalHealthManagement />
