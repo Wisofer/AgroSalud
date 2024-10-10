@@ -14,13 +14,22 @@ import DataAutomationAnalysis from './components/DataAutomationAnalysis/DataAuto
 import AnimalProfile from './components/AnimalProfile/AnimalProfile.jsx'
 import './index.css'
 import Inicio from './components/Home/Inicio.jsx'
+import RegisterForm from './auth/RegisterForm.jsx'
+import Login from './auth/Login.jsx'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomePage />
   },
-
+  {
+    path: '/registro',
+    element: <RegisterForm />
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
   {
     path: '/cow',
     element: <CowForm />
