@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCow, faPiggyBank, faOtter, faTag, faBirthdayCake, faWeight, faVenusMars, faDna, faBullseye, faFileExcel } from '@fortawesome/free-solid-svg-icons'
 import img8 from "../../../public/img/img8.jpg"
 import * as XLSX from 'xlsx'
+import { supabase } from '../../supabase/supabase'
 
 // Componente para mostrar un animal individual
 const AnimalListItem = ({ animal, onEdit, onView }) => {
   const exportToExcel = () => {
     const dataToExport = {
       Nombre: animal.nombre,
-      Etiqueta: animal.numeroEtiqueta,
+      Etiqueta: animal.numero_etiqueta,
       Edad: `${animal.meses} meses`,
       Peso: `${animal.peso} kg`,
       Género: animal.genero,
@@ -31,7 +32,7 @@ const AnimalListItem = ({ animal, onEdit, onView }) => {
       </div>
       <p className="text-gray-600 mb-2">
         <FontAwesomeIcon icon={faTag} className="mr-2 text-indigo-500" />
-        Etiqueta: <span className="font-semibold">{animal.numeroEtiqueta}</span>
+        Etiqueta: <span className="font-semibold">{animal.numero_etiqueta}</span>
       </p>
       <ul className="list-none mb-2 text-sm text-gray-700">
         <li>
@@ -94,25 +95,27 @@ const Modal = ({ isOpen, onClose, children }) => {
 };
 
 const AnimalProfile = () => {
-  const [animales, setAnimales] = useState({
-    vacas: [
-      { nombre: 'Lola', meses: '24', numeroEtiqueta: 'V001', peso: '450', genero: 'Hembra', raza: 'Holstein', proposito: 'Leche', foto: 'https://taxonomiaanimal.wordpress.com/wp-content/uploads/2018/03/vaca.png' },
-      { nombre: 'Torito', meses: '18', numeroEtiqueta: 'V002', peso: '500', genero: 'Macho', raza: 'Angus', proposito: 'Carne', foto: img8 },
-    ],
-    cabras: [
-      { nombre: 'Blanquita', meses: '12', numeroEtiqueta: 'C001', peso: '30', genero: 'Hembra', raza: 'Saanen', proposito: 'Leche', foto: 'https://ejemplo.com/foto-blanquita.jpg' },
-    ],
-    cerdos: [
-      { nombre: 'Porky', meses: '8', numeroEtiqueta: 'P001', peso: '100', genero: 'Macho', raza: 'Duroc', proposito: 'Carne', foto: 'https://ejemplo.com/foto-porky.jpg' },
-    ],
-    otros: [
-      { nombre: 'Gallina', meses: '6', numeroEtiqueta: 'O001', peso: '2', genero: 'Hembra', raza: 'Rhode Island', proposito: 'Huevos', foto: 'https://ejemplo.com/foto-gallina.jpg' },
-    ],
-  })
-
+  const [animales, setAnimales] = useState([])
   const [categoriaActiva, setCategoriaActiva] = useState('vacas')
   const [animalSeleccionado, setAnimalSeleccionado] = useState(null)
   const [modalAbierto, setModalAbierto] = useState(false)
+
+  useEffect(() => {
+    fetchAnimales()
+  }, [])
+
+  const fetchAnimales = async () => {
+    const { data, error } = await supabase
+      .from('vacas')
+      .select('*')
+      
+    
+    if (error) {
+      console.error('Error fetching animales:', error)
+    } else {
+      setAnimales(data)
+    }
+  }
 
   const categorias = [
     { valor: 'vacas', icono: faCow, texto: 'Vacas', color: 'bg-blue-500' },
@@ -152,7 +155,7 @@ const AnimalProfile = () => {
       </div>
       <div className="container mx-auto">
         <ul className="space-y-4">
-          {animales[categoriaActiva].map((animal, index) => (
+          {animales.map((animal, index) => (
             <AnimalListItem 
               key={index}
               animal={animal} 
@@ -173,7 +176,7 @@ const AnimalProfile = () => {
                   <FontAwesomeIcon icon={
                     clave === 'nombre' ? faTag :
                     clave === 'meses' ? faBirthdayCake :
-                    clave === 'numeroEtiqueta' ? faTag :
+                    clave === 'numero_etiqueta' ? faTag :
                     clave === 'peso' ? faWeight :
                     clave === 'genero' ? faVenusMars :
                     clave === 'raza' ? faDna :

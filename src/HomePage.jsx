@@ -101,7 +101,7 @@ const HomePage = () => {
         navigate("/login");
       }
       setIsLoggingOut(false);
-    }, 3000);
+    }, 5000);
   };
 
   const animales = [

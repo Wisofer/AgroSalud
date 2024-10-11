@@ -3,19 +3,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCow, faCalendarAlt, faTag, faWeight, faGenderless, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../supabase/supabase';
+import { useAgroSalud } from '../../Context/AgroSaludContext';
 import cowImage from '../../../public/img/img6.jpg';
 
 const CowForm = () => {
   const navigate = useNavigate();
+  const { usuario } = useAgroSalud();
   const [formData, setFormData] = useState({
     nombre: '',
     meses: '',
-    numeroEtiqueta: '',
+    numero_etiqueta: '',
     peso: '',
     genero: '',
     raza: '',
     proposito: '',
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,12 +29,34 @@ const CowForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes manejar el envío del formulario
-    console.log(formData);
-    // Redirigir al usuario a la ruta dashboard
-    navigate('/dashboard/perfil-animal');
+    setError(null);
+
+    try {
+      const { data, error } = await supabase
+        .from('vacas')
+        .insert([
+          {
+            nombre: formData.nombre,
+            meses: parseInt(formData.meses),
+            numero_etiqueta: formData.numero_etiqueta,
+            peso: parseFloat(formData.peso),
+            genero: formData.genero,
+            raza: formData.raza,
+            proposito: formData.proposito,
+            usuario_id: usuario.id,
+          },
+        ]);
+
+      if (error) throw error;
+
+      console.log('Vaca registrada con éxito:', data);
+      navigate('/dashboard/perfil-animal');
+    } catch (error) {
+      console.error('Error al registrar la vaca:', error);
+      setError('Hubo un error al registrar la vaca. Por favor, inténtalo de nuevo.');
+    }
   };
 
   return (
@@ -63,6 +89,8 @@ const CowForm = () => {
           </div>
         </motion.div>
         
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg">
           <div className="grid grid-cols-2 gap-6">
             <div className="form-group mb-4">
@@ -77,6 +105,7 @@ const CowForm = () => {
                 onChange={handleChange}
                 placeholder="Nombre"
                 className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               />
             </div>
             <div className="form-group mb-4">
@@ -93,20 +122,22 @@ const CowForm = () => {
                 min="0"
                 max="360"
                 className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               />
             </div>
             <div className="form-group mb-4">
-              <label htmlFor="numeroEtiqueta" className="block text-lg font-semibold mb-2 text-green-700">
+              <label htmlFor="numero_etiqueta" className="block text-lg font-semibold mb-2 text-green-700">
                 <FontAwesomeIcon icon={faTag} /> Etiqueta
               </label>
               <input
                 type="text"
-                id="numeroEtiqueta"
-                name="numeroEtiqueta"
-                value={formData.numeroEtiqueta}
+                id="numero_etiqueta"
+                name="numero_etiqueta"
+                value={formData.numero_etiqueta}
                 onChange={handleChange}
                 placeholder="Etiqueta"
                 className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               />
             </div>
             <div className="form-group mb-4">
@@ -120,7 +151,9 @@ const CowForm = () => {
                 value={formData.peso}
                 onChange={handleChange}
                 placeholder="Peso"
+                step="0.01"
                 className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               />
             </div>
             <div className="form-group mb-4">
@@ -151,6 +184,7 @@ const CowForm = () => {
                 value={formData.genero}
                 onChange={handleChange}
                 className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               >
                 <option value="">Seleccione</option>
                 <option value="macho">Macho</option>
@@ -167,6 +201,7 @@ const CowForm = () => {
                 value={formData.proposito}
                 onChange={handleChange}
                 className="w-full p-3 border border-green-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               >
                 <option value="">Seleccione</option>
                 <option value="carne">Carne</option>

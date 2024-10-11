@@ -41,6 +41,7 @@ const RegisterForm = () => {
           .from('usuarios')
           .insert([
             {
+              id: authData.user.id, // Usar el UID de auth como id en la tabla usuarios
               nombre,
               apellido,
               email,
