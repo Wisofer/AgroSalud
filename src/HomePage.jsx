@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCow,
@@ -8,14 +8,102 @@ import {
   faHospital,
   faHeart,
   faPlus,
+  faUser,
+  faSignOutAlt,
+  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import img3 from "../public/img/img3.jpg";
 import img4 from "../public/img/img4.jpg";
 import img5 from "../public/img/img7.jpg";
-import img1 from "../public/img/img1.jpg";
+import img1 from "../public/img/img1.png";
+import { supabase } from "./supabase/supabase";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [showUserInfo, setShowUserInfo] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from("usuarios")
+          .select("nombre, apellido, rol_id, departamento_id")
+          .eq("email", user.email)
+          .single();
+
+        if (data) {
+          setUser({
+            ...user,
+            ...data,
+            rol: getRolName(data.rol_id),
+            departamento: getDepartamentoName(data.departamento_id),
+          });
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  const getRolName = (rolId) => {
+    const roles = {
+      1: "Granjero",
+      2: "Veterinario",
+      3: "Administrador",
+      4: "Técnico Agrícola",
+      5: "Investigador",
+    };
+    return roles[rolId] || "Desconocido";
+  };
+
+  const getDepartamentoName = (departamentoId) => {
+    const departamentos = {
+      1: "Boaco",
+      2: "Carazo",
+      3: "Chinandega",
+      4: "Chontales",
+      5: "Estelí",
+      6: "Granada",
+      7: "Jinotega",
+      8: "León",
+      9: "Madriz",
+      10: "Managua",
+      11: "Masaya",
+      12: "Matagalpa",
+      13: "Nueva Segovia",
+      14: "Río San Juan",
+      15: "Rivas",
+      16: "RACCN",
+      17: "RACCS",
+    };
+    return departamentos[departamentoId] || "Desconocido";
+  };
+
+  const toggleUserInfo = () => {
+    if (user) {
+      setShowUserInfo(!showUserInfo);
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    setTimeout(async () => {
+      const { error } = await supabase.auth.signOut();
+      if (!error) {
+        navigate("/login");
+      }
+      setIsLoggingOut(false);
+    }, 3000);
+  };
+
   const animales = [
     {
       nombre: "Vaca",
@@ -43,7 +131,83 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-100 to-blue-100">
+    <div className="min-h-screen bg-gradient-to-b from-green-100 to-blue-100 font-montserrat relative">
+      {isLoggingOut && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-50"
+        >
+          <motion.div
+            animate={{
+              rotate: 360,
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="relative"
+          >
+            <img src={img1} alt="Logo" className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64" />
+            <motion.div
+              className="absolute inset-0 border-t-4 border-green-500 rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            ></motion.div>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="text-white text-lg sm:text-xl mt-4 font-semibold text-center"
+          >
+            Cerrando sesión...
+          </motion.p>
+        </motion.div>
+      )}
+      <header className="p-4 flex justify-end">
+        <motion.div
+          className="relative"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center cursor-pointer" onClick={toggleUserInfo}>
+            <FontAwesomeIcon
+              icon={faUser}
+              className="text-xl text-white"
+            />
+          </div>
+          <AnimatePresence>
+            {showUserInfo && user && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl p-4"
+              >
+                <p className="font-bold">{`${user.nombre} ${user.apellido}`}</p>
+                <p>{`Rol: ${user.rol}`}</p>
+                <p>{`Departamento: ${user.departamento}`}</p>
+                <button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 flex items-center justify-center w-full"
+                >
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+                  Desconectar
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </header>
       <main className="container mx-auto px-4 py-12">
         <motion.div
           className="bg-white rounded-xl shadow-lg p-8 mb-12 transform hover:scale-105 transition-all duration-300"

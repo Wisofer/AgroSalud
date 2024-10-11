@@ -1,34 +1,91 @@
 import React, { useState } from 'react';
 import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../public/img/img1.png'; 
+import { supabase } from '../supabase/supabase';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const navigate = useNavigate();
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('');
-  const [department, setDepartment] = useState('');
+  const [contraseña, setContraseña] = useState('');
+  const [confirmarContraseña, setConfirmarContraseña] = useState('');
+  const [rolId, setRolId] = useState('');
+  const [departamentoId, setDepartamentoId] = useState('');
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica de registro aquí
+    setError(null);
+
+    if (contraseña !== confirmarContraseña) {
+      setError('Las contraseñas no coinciden');
+      return;
+    }
+
+    try {
+      // Registrar el usuario en la autenticación de Supabase
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password: contraseña,
+      });
+
+      if (authError) throw authError;
+
+      if (authData && authData.user) {
+        // Insertar los datos del usuario en la tabla 'usuarios'
+        const { data, error } = await supabase
+          .from('usuarios')
+          .insert([
+            {
+              nombre,
+              apellido,
+              email,
+              contraseña,
+              rol_id: rolId,
+              departamento_id: departamentoId
+            }
+          ]);
+
+        if (error) throw error;
+
+        console.log('Usuario registrado:', data);
+        setShowModal(true);
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
-  const departments = [
-    'Boaco', 'Carazo', 'Chinandega', 'Chontales', 'Estelí', 'Granada', 'Jinotega', 'León', 'Madriz',
-    'Managua', 'Masaya', 'Matagalpa', 'Nueva Segovia', 'Río San Juan', 'Rivas',
-    'RACCN', 'RACCS'
+  const departamentos = [
+    { id: 1, nombre: 'Boaco' },
+    { id: 2, nombre: 'Carazo' },
+    { id: 3, nombre: 'Chinandega' },
+    { id: 4, nombre: 'Chontales' },
+    { id: 5, nombre: 'Estelí' },
+    { id: 6, nombre: 'Granada' },
+    { id: 7, nombre: 'Jinotega' },
+    { id: 8, nombre: 'León' },
+    { id: 9, nombre: 'Madriz' },
+    { id: 10, nombre: 'Managua' },
+    { id: 11, nombre: 'Masaya' },
+    { id: 12, nombre: 'Matagalpa' },
+    { id: 13, nombre: 'Nueva Segovia' },
+    { id: 14, nombre: 'Río San Juan' },
+    { id: 15, nombre: 'Rivas' },
+    { id: 16, nombre: 'RACCN' },
+    { id: 17, nombre: 'RACCS' }
   ];
 
   const roles = [
-    { value: 'granjero', label: 'Granjero' },
-    { value: 'veterinario', label: 'Veterinario' },
-    { value: 'administrador', label: 'Administrador' },
-    { value: 'tecnico', label: 'Técnico Agrícola' },
-    { value: 'investigador', label: 'Investigador' }
+    { id: 1, nombre: 'Granjero' },
+    { id: 2, nombre: 'Veterinario' },
+    { id: 3, nombre: 'Administrador' },
+    { id: 4, nombre: 'Técnico Agrícola' },
+    { id: 5, nombre: 'Investigador' }
   ];
 
   return (
@@ -58,6 +115,8 @@ const RegisterForm = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <h2 className="text-2xl font-bold mb-4 text-center text-green-800">Registro AgroSalud</h2>
           
+          {error && <div className="text-red-500 text-center">{error}</div>}
+          
           <div className="grid grid-cols-2 gap-4">
             <div className="relative">
               <FaUser className="absolute top-3 left-3 text-green-500" />
@@ -65,8 +124,8 @@ const RegisterForm = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
                 type="text"
                 placeholder="Nombre"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
                 required
               />
             </div>
@@ -76,8 +135,8 @@ const RegisterForm = () => {
                 className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
                 type="text"
                 placeholder="Apellido"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={apellido}
+                onChange={(e) => setApellido(e.target.value)}
                 required
               />
             </div>
@@ -101,8 +160,8 @@ const RegisterForm = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
               type="password"
               placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={contraseña}
+              onChange={(e) => setContraseña(e.target.value)}
               required
             />
           </div>
@@ -113,8 +172,8 @@ const RegisterForm = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
               type="password"
               placeholder="Confirmar Contraseña"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmarContraseña}
+              onChange={(e) => setConfirmarContraseña(e.target.value)}
               required
             />
           </div>
@@ -122,25 +181,25 @@ const RegisterForm = () => {
           <div className="grid grid-cols-2 gap-4">
             <select
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
+              value={rolId}
+              onChange={(e) => setRolId(e.target.value)}
               required
             >
               <option value="">Selecciona rol</option>
-              {roles.map((role) => (
-                <option key={role.value} value={role.value}>{role.label}</option>
+              {roles.map((rol) => (
+                <option key={rol.id} value={rol.id}>{rol.nombre}</option>
               ))}
             </select>
 
             <select
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
+              value={departamentoId}
+              onChange={(e) => setDepartamentoId(e.target.value)}
               required
             >
               <option value="">Selecciona departamento</option>
-              {departments.map((dept, index) => (
-                <option key={index} value={dept}>{dept}</option>
+              {departamentos.map((dept) => (
+                <option key={dept.id} value={dept.id}>{dept.nombre}</option>
               ))}
             </select>
           </div>
@@ -160,6 +219,36 @@ const RegisterForm = () => {
           <a href="/login" className="text-sm text-green-600 hover:text-green-800 font-bold transition duration-300">Inicia sesión aquí</a>
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          >
+            <motion.div
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              className="bg-white p-6 rounded-lg shadow-xl"
+            >
+              <h3 className="text-xl font-bold mb-4">Registro Exitoso</h3>
+              <p className="mb-4">Por favor, revisa tu correo electrónico para confirmar tu cuenta.</p>
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                  navigate('/login');
+                }}
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+              >
+                Entendido
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
