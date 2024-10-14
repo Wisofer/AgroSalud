@@ -15,10 +15,12 @@ import {
   faComments,
   faChartBar,
   faBars,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, Outlet } from "react-router-dom";
-import img9 from "../../public/img/img9.jpg"
+import img9 from "../../public/img/img9.jpg";
+import { supabase } from "../supabase/supabase"; // Asegúrate de tener configurado supabaseClient
 
 const Dashboard = () => {
   const [animalData, setAnimalData] = useState({
@@ -29,6 +31,9 @@ const Dashboard = () => {
   });
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [userData, setUserData] = useState(null);
+  const [showUserInfo, setShowUserInfo] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     // Aquí simularemos la obtención de datos de los formularios
@@ -47,8 +52,85 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from("usuarios")
+          .select("nombre, apellido, rol_id, departamento_id")
+          .eq("email", user.email)
+          .single();
+
+        if (data) {
+          setUserData({
+            ...user,
+            ...data,
+            rol: getRolName(data.rol_id),
+            departamento: getDepartamentoName(data.departamento_id),
+          });
+        }
+      } else {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  const getRolName = (rolId) => {
+    const roles = {
+      1: "Granjero",
+      2: "Veterinario",
+      3: "Administrador",
+      4: "Técnico Agrícola",
+      5: "Investigador",
+    };
+    return roles[rolId] || "Desconocido";
+  };
+
+  const getDepartamentoName = (departamentoId) => {
+    const departamentos = {
+      1: "Boaco",
+      2: "Carazo",
+      3: "Chinandega",
+      4: "Chontales",
+      5: "Estelí",
+      6: "Granada",
+      7: "Jinotega",
+      8: "León",
+      9: "Madriz",
+      10: "Managua",
+      11: "Masaya",
+      12: "Matagalpa",
+      13: "Nueva Segovia",
+      14: "Río San Juan",
+      15: "Rivas",
+      16: "RACCN",
+      17: "RACCS",
+    };
+    return departamentos[departamentoId] || "Desconocido";
+  };
+
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
+  };
+
+  const toggleUserInfo = () => {
+    setShowUserInfo(!showUserInfo);
+  };
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    setTimeout(async () => {
+      const { error } = await supabase.auth.signOut();
+      if (!error) {
+        window.location.href = "/login";
+      }
+      setIsLoggingOut(false);
+    }, 5000);
   };
 
   return (
@@ -133,19 +215,42 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className="flex-1 bg-gray-100">
-        <header className="bg-gradient-to-r from-green-600 to-indigo-800 shadow-lg p-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-white">
-            Panel de Control
-          </h1>
-          <div className="flex items-center space-x-6">
-            <div className="flex items-center space-x-3">
-              <img src={img9} alt="Avatar del usuario" className="w-10 h-10 rounded-full border-2 border-white" />
-              <p className="text-white font-medium">Bienvenido, Sr. William</p>
+        <header className="p-4 flex justify-end">
+          <motion.div
+            className="relative"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <div
+              className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center cursor-pointer"
+              onClick={toggleUserInfo}
+            >
+              <FontAwesomeIcon icon={faUser} className="text-xl text-white" />
             </div>
-            <button className="bg-white text-indigo-800 hover:bg-indigo-100 font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out shadow-md hover:shadow-lg">
-              Cerrar sesión
-            </button>
-          </div>
+            <AnimatePresence>
+              {showUserInfo && userData && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl p-4"
+                >
+                  <p className="font-bold">{`${userData.nombre} ${userData.apellido}`}</p>
+                  <p>{`Rol: ${userData.rol}`}</p>
+                  <p>{`Departamento: ${userData.departamento}`}</p>
+                  <p>{userData.email}</p>
+                  <button
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300 flex items-center justify-center w-full"
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+                    Desconectar
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </header>
 
         {/* Content Area */}

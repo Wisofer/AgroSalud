@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCow, faPiggyBank, faHorse, faPaw, faChartLine, faCalendarAlt, faBell } from '@fortawesome/free-solid-svg-icons';
-import img10 from '../../../public/img/img1.jpg'
+import img10 from '../../../public/img/1.jpg'
 
 const Inicio = () => {
   return (

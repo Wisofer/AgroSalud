@@ -3,8 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPiggyBank, faCalendarAlt, faTag, faWeight, faVenusMars, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import pigImage from '../../../public/img/img4.jpg';
+import { supabase } from '../../supabase/supabase';
+import { useAgroSalud } from '../../Context/AgroSaludContext';
+import { useNavigate } from 'react-router-dom';
 
 const PigForm = () => {
+  const navigate = useNavigate();
+  const { usuario } = useAgroSalud();
   const [formData, setFormData] = useState({
     name: '',
     birthDate: '',
@@ -14,6 +19,7 @@ const PigForm = () => {
     breed: '',
     purpose: '',
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,10 +29,43 @@ const PigForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí puedes manejar el envío del formulario
-    console.log(formData);
+    setError(null);
+
+    try {
+      const { data, error } = await supabase
+        .from('cerdos')
+        .insert([
+          {
+            nombre: formData.name,
+            meses: calcularMeses(formData.birthDate),
+            numero_etiqueta: formData.tagNumber,
+            peso: parseFloat(formData.weight),
+            genero: formData.gender,
+            raza: formData.breed,
+            proposito: formData.purpose,
+            usuario_id: usuario.id,
+          },
+        ]);
+
+      if (error) throw error;
+
+      console.log('Cerdo registrado con éxito:', data);
+      navigate('/dashboard/perfil-animal');
+    } catch (error) {
+      console.error('Error al registrar el cerdo:', error);
+      setError('Hubo un error al registrar el cerdo. Por favor, inténtalo de nuevo.');
+    }
+  };
+
+  const calcularMeses = (fechaNacimiento) => {
+    const fechaActual = new Date();
+    const fechaNac = new Date(fechaNacimiento);
+    let meses = (fechaActual.getFullYear() - fechaNac.getFullYear()) * 12;
+    meses -= fechaNac.getMonth();
+    meses += fechaActual.getMonth();
+    return meses <= 0 ? 0 : meses;
   };
 
   return (
@@ -58,6 +97,8 @@ const PigForm = () => {
             />
           </div>
         </motion.div>
+        
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg">
           <div className="grid grid-cols-2 gap-6">

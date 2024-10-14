@@ -1,28 +1,28 @@
 // main.jsx o index.jsx (según tu configuración)
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AgroSaludProvider } from './Context/AgroSaludContext.jsx'; // Asegúrate de que la ruta es correcta
-import HomePage from './HomePage.jsx';
-import Dashboard from './components/Dashboard.jsx';
-import CowForm from './components/Formularios/CowForm.jsx';
-import PigForm from './components/Formularios/PigForm.jsx';
-import GoatForm from './components/Formularios/GoatForm.jsx';
-import OtherForm from './components/Formularios/OtherForm.jsx';
-import AnimalHealthManagement from './components/AnimalHealthManagement/AnimalHealthManagement.jsx';
-import AnimalWelfareMonitoring from './components/AnimalWelfareMonitoring/AnimalWelfareMonitoring.jsx';
-import CommunicationCoordination from './components/CommunicationCoordination/CommunicationCoordination.jsx';
-import DataAutomationAnalysis from './components/DataAutomationAnalysis/DataAutomationAnalysis.jsx';
-import AnimalProfile from './components/AnimalProfile/AnimalProfile.jsx';
-import Inicio from './components/Home/Inicio.jsx';
-import RegisterForm from './auth/RegisterForm.jsx';
-import Login from './auth/Login.jsx';
-import { ProtectedRoute, AuthRoute } from './Context/AuthRoutes.jsx'; // Asegúrate de que la ruta es correcta
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AgroSaludProvider } from "./Context/AgroSaludContext.jsx"; // Asegúrate de que la ruta es correcta
+import HomePage from "./HomePage.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import CowForm from "./components/Formularios/CowForm.jsx";
+import PigForm from "./components/Formularios/PigForm.jsx";
+import GoatForm from "./components/Formularios/GoatForm.jsx";
+import OtherForm from "./components/Formularios/OtherForm.jsx";
+import AnimalHealthManagement from "./components/AnimalHealthManagement/AnimalHealthManagement.jsx";
+import AnimalWelfareMonitoring from "./components/AnimalWelfareMonitoring/AnimalWelfareMonitoring.jsx";
+import CommunicationCoordination from "./components/CommunicationCoordination/CommunicationCoordination.jsx";
+import DataAutomationAnalysis from "./components/DataAutomationAnalysis/DataAutomationAnalysis.jsx";
+import AnimalProfile from "./components/AnimalProfile/AnimalProfile.jsx";
+import Inicio from "./components/Home/Inicio.jsx";
+import RegisterForm from "./auth/RegisterForm.jsx";
+import Login from "./auth/Login.jsx";
+import { ProtectedRoute, AuthRoute } from "./Context/AuthRoutes.jsx"; // Asegúrate de que la ruta es correcta
+import "./index.css";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: (
       <ProtectedRoute>
         <HomePage />
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/registro',
+    path: "/registro",
     element: (
       <AuthRoute>
         <RegisterForm />
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/login',
+    path: "/login",
     element: (
       <AuthRoute>
         <Login />
@@ -46,7 +46,39 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/dashboard',
+    path: "/cow",
+    element: (
+      <ProtectedRoute>
+        <CowForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/pig",
+    element: (
+      <ProtectedRoute>
+        <PigForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/goat",
+    element: (
+      <ProtectedRoute>
+        <GoatForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/other_animals",
+    element: (
+      <ProtectedRoute>
+        <OtherForm />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/dashboard",
     element: (
       <ProtectedRoute>
         <Dashboard />
@@ -54,50 +86,50 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: '',
+        path: "",
         element: <Inicio />,
       },
       {
-        path: 'cow',
+        path: "cow",
         element: <CowForm />,
       },
       {
-        path: 'pig',
+        path: "pig",
         element: <PigForm />,
       },
       {
-        path: 'goat',
+        path: "goat",
         element: <GoatForm />,
       },
       {
-        path: 'other',
+        path: "other_animals",
         element: <OtherForm />,
       },
       {
-        path: 'gestion-salud-animal',
+        path: "gestion-salud-animal",
         element: <AnimalHealthManagement />,
       },
       {
-        path: 'monitoreo-bienestar-animal',
+        path: "monitoreo-bienestar-animal",
         element: <AnimalWelfareMonitoring />,
       },
       {
-        path: 'comunicacion-coordinacion',
+        path: "comunicacion-coordinacion",
         element: <CommunicationCoordination />,
       },
       {
-        path: 'analisis-automatizacion-datos',
+        path: "analisis-automatizacion-datos",
         element: <DataAutomationAnalysis />,
       },
       {
-        path: 'perfil-animal',
+        path: "perfil-animal",
         element: <AnimalProfile />,
       },
     ],
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AgroSaludProvider>
       <RouterProvider router={router} />

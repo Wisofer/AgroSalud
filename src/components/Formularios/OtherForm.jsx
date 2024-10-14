@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faCalendarAlt, faTag, faWeight, faVenusMars, faClipboardList, faImage } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
+import { supabase } from '../../supabase/supabase';
+import { useAgroSalud } from '../../Context/AgroSaludContext';
+import { useNavigate } from 'react-router-dom';
 
 const OtherForm = () => {
+  const { usuario } = useAgroSalud();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: '',
     especie: '',
@@ -14,6 +19,7 @@ const OtherForm = () => {
     proposito: '',
     imagen: null
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,9 +36,47 @@ const OtherForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    setError(null);
+
+    const { nombre, especie, fechaNacimiento, numeroEtiqueta, peso, genero, proposito, imagen } = formData;
+    const imagenBytes = await convertToBytes(imagen);
+
+    try {
+      const { data, error } = await supabase
+        .from('otros_animales')
+        .insert([
+          {
+            nombre,
+            especie,
+            fecha_nacimiento: fechaNacimiento,
+            numero_etiqueta: numeroEtiqueta,
+            peso: parseInt(peso),
+            genero,
+            proposito,
+            imagen: imagenBytes,
+            usuario_id: usuario.id
+          },
+        ]);
+
+      if (error) throw error;
+
+      console.log('Animal registrado con éxito:', data);
+      navigate('/dashboard/perfil-animal');
+    } catch (error) {
+      console.error('Error al registrar el animal:', error);
+      setError('Hubo un error al registrar el animal. Por favor, inténtalo de nuevo.');
+    }
+  };
+
+  const convertToBytes = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+      reader.readAsArrayBuffer(file);
+    });
   };
 
   return (
