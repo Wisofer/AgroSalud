@@ -11,6 +11,7 @@ import {
   faUser,
   faSignOutAlt,
   faSpinner,
+  faTachometerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import img3 from "../public/img/img3.jpg";
@@ -323,19 +324,34 @@ const HomePage = () => {
             transition={{ delay: 0.2 * (animales.length + 1), duration: 0.5 }}
           ></motion.div>
         </div>
-        <Link to="/other">
-          <div className="flex items-center justify-end mt-12 cursor-pointer group">
-            <div className="relative overflow-hidden rounded-full bg-green-100 p-4 transition-all duration-300 group-hover:bg-green-200">
-              <FontAwesomeIcon
-                icon={faPlus}
-                className="text-5xl text-green-500 group-hover:text-green-600 transition-colors duration-300 transform group-hover:rotate-90"
-              />
+        <div className="flex items-center justify-between mt-12">
+          <Link to="/dashboard">
+            <div className="flex items-center cursor-pointer group">
+              <div className="relative overflow-hidden rounded-full bg-blue-100 p-4 transition-all duration-300 group-hover:bg-blue-200">
+                <FontAwesomeIcon
+                  icon={faTachometerAlt}
+                  className="text-5xl text-blue-500 group-hover:text-blue-600 transition-colors duration-300 transform group-hover:rotate-90"
+                />
+              </div>
+              <span className="ml-4 text-3xl font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300 border-b-2 border-transparent group-hover:border-blue-500">
+                Ir al Dashboard
+              </span>
             </div>
-            <span className="ml-4 text-3xl font-bold text-gray-800 group-hover:text-green-600 transition-colors duration-300 border-b-2 border-transparent group-hover:border-green-500">
-              Agregar Otro
-            </span>
-          </div>
-        </Link>
+          </Link>
+          <Link to="/other_animals">
+            <div className="flex items-center cursor-pointer group">
+              <div className="relative overflow-hidden rounded-full bg-green-100 p-4 transition-all duration-300 group-hover:bg-green-200">
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="text-5xl text-green-500 group-hover:text-green-600 transition-colors duration-300 transform group-hover:rotate-90"
+                />
+              </div>
+              <span className="ml-4 text-3xl font-bold text-gray-800 group-hover:text-green-600 transition-colors duration-300 border-b-2 border-transparent group-hover:border-green-500">
+                Agregar Otro Animal
+              </span>
+            </div>
+          </Link>
+        </div>
       </main>
     </div>
   );

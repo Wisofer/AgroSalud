@@ -5,7 +5,7 @@ import img10 from '../../../public/img/1.jpg'
 
 const Inicio = () => {
   return (
-    <div className="bg-gray-100 min-h-screen p-8">
+    <div className="bg-gray-100 min-h-screen p-8 font-montserrat">
       <h1 className="text-4xl font-bold text-indigo-800 mb-8">Bienvenido al Panel de Control</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
