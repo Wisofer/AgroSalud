@@ -17,6 +17,7 @@ import AnimalProfile from "./components/AnimalProfile/AnimalProfile.jsx";
 import Inicio from "./components/Home/Inicio.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
 import Login from "./auth/Login.jsx";
+import NoFound from "./pages/NoFound.jsx";
 import { ProtectedRoute, AuthRoute } from "./Context/AuthRoutes.jsx"; // Asegúrate de que la ruta es correcta
 import "./index.css";
 
@@ -77,6 +78,15 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+
+  {
+    path: "*",
+    element: (
+      <ProtectedRoute>
+        <NoFound />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/dashboard",
     element: (
@@ -125,7 +135,15 @@ const router = createBrowserRouter([
         path: "perfil-animal",
         element: <AnimalProfile />,
       },
+      {
+        path: "*",
+        element: <NoFound />,
+      },
     ],
+  },
+  {
+    path: "*",
+    element: <NoFound />,
   },
 ]);
 

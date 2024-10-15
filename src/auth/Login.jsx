@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../public/img/img1.png';
+import logo from '../../public/img/agrosalud1.png';
+import login from '../../public/img/login.jpeg';
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 
@@ -41,7 +42,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-100 to-green-200 p-4 font-montserrat">
+    <div className="flex items-center justify-center min-h-screen bg-cover bg-center p-4 font-montserrat" style={{ backgroundImage: `url(${login})` }}>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}

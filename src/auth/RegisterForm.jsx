@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../public/img/img1.png'; 
+import logo from '../../public/img/agrosalud2.png';
+import register from '../../public/img/register.png'; 
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 
@@ -90,7 +91,7 @@ const RegisterForm = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-green-100 to-green-200 p-4 font-montserrat">
+    <div className="flex items-center justify-center min-h-screen bg-cover bg-center p-4 font-montserrat" style={{ backgroundImage: `url(${register})` }}>
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
