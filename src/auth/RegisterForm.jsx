@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaUser, FaVenusMars } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../public/img/agrosalud2.png';
 import register from '../../public/img/register2.jpeg'; 
@@ -13,6 +13,7 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
+  const [sexo, setSexo] = useState('');
   const [rolId, setRolId] = useState('');
   const [departamentoId, setDepartamentoId] = useState('');
   const [error, setError] = useState(null);
@@ -47,6 +48,7 @@ const RegisterForm = () => {
               apellido,
               email,
               contraseña,
+              sexo,
               rol_id: rolId,
               departamento_id: departamentoId
             }
@@ -178,6 +180,20 @@ const RegisterForm = () => {
               onChange={(e) => setConfirmarContraseña(e.target.value)}
               required
             />
+          </div>
+
+          <div className="relative">
+            <FaVenusMars className="absolute top-3 left-3 text-green-500" />
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              value={sexo}
+              onChange={(e) => setSexo(e.target.value)}
+              required
+            >
+              <option value="">Selecciona sexo</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+            </select>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
