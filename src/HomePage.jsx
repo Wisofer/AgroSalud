@@ -132,7 +132,7 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-green-100 to-blue-100 font-montserrat relative">
+    <div className="min-h-screen bg-gradient-to-b from-green-300 to-blue-100 font-montserrat relative">
       {isLoggingOut && (
         <motion.div
           initial={{ opacity: 0 }}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../../public/img/agrosalud2.png';
-import register from '../../public/img/register.png'; 
+import register from '../../public/img/register2.jpeg'; 
 import { supabase } from '../supabase/supabase';
 import { useNavigate } from 'react-router-dom';
 

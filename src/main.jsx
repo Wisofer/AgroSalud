@@ -14,6 +14,8 @@ import AnimalWelfareMonitoring from "./components/AnimalWelfareMonitoring/Animal
 import CommunicationCoordination from "./components/CommunicationCoordination/CommunicationCoordination.jsx";
 import DataAutomationAnalysis from "./components/DataAutomationAnalysis/DataAutomationAnalysis.jsx";
 import AnimalProfile from "./components/AnimalProfile/AnimalProfile.jsx";
+import RegistroMedico from "./components/RegistroMedico/RegistroMedico.jsx";
+import Vacunacion from "./components/Vacunacion/Vacunacion.jsx";
 import Inicio from "./components/Home/Inicio.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
 import Login from "./auth/Login.jsx";
@@ -118,6 +120,16 @@ const router = createBrowserRouter([
       {
         path: "gestion-salud-animal",
         element: <AnimalHealthManagement />,
+        children: [
+          {
+            path: "monitoreo-medico",
+            element: <RegistroMedico />,
+          },
+          {
+            path: "vacunacion",
+            element: <Vacunacion />,
+          },
+        ],
       },
       {
         path: "monitoreo-bienestar-animal",
