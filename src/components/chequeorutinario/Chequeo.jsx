@@ -1,23 +1,31 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStethoscope,
-  faCalendarAlt,
-  faNotesMedical,
-  faPaw,
-  faClipboardList,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faNotesMedical, faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
+import { supabase } from "../../supabase/supabase";
 import { Link } from "react-router-dom";
 
-const RegistroMedico = () => {
+const ChequeoRutinario = () => {
   const [formData, setFormData] = useState({
     nombreAnimal: "",
     especie: "",
-    fechaConsulta: "",
-    diagnostico: "",
-    nivelActividad: "",
+    fechaChequeo: "",
+    resultados: "",
+    notas: "",
   });
+
+  const especies = [
+    "Vacas",
+    "Cerdos",
+    "Cabras",
+    "Caballos",
+    "Aves",
+    "Perros",
+    "Gatos",
+    "Ovejas",
+    "Conejos",
+    "Avestruces"
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,34 +35,26 @@ const RegistroMedico = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { data, error } = await supabase.from('chequeos_rutinarios').insert([formData]);
+    if (error) {
+      console.error('Error adding chequeo rutinario:', error);
+      return;
+    }
     setFormData({
       nombreAnimal: "",
       especie: "",
-      fechaConsulta: "",
-      diagnostico: "",
-      nivelActividad: "",
+      fechaChequeo: "",
+      resultados: "",
+      notas: "",
     });
   };
 
-  const enfermedadesPorEspecie = {
-    Vacas: [],
-    Cerdos: [],
-    Cabras: [],
-    Caballos: [],
-    Aves: [],
-    Perros: [],
-    Gatos: [],
-    Ovejas: [],
-    Conejos: [],
-    Avestruces: [],
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-300 to-green-100 font-montserrat relative flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-green-100 p-8 font-montserrat">
       <motion.div
-        className="registro-medico-container max-w-4xl mx-auto mt-10"
+        className="chequeo-rutinario-container max-w-4xl mx-auto mt-10"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -72,11 +72,11 @@ const RegistroMedico = () => {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <h2 className="text-3xl font-bold text-center mb-4 text-blue-800">
-              Monitoreo Médico
+              Planificación y Registro de Chequeos Rutinarios
             </h2>
             <div className="text-center">
               <FontAwesomeIcon
-                icon={faStethoscope}
+                icon={faClipboardList}
                 className="text-5xl text-blue-500"
               />
             </div>
@@ -89,7 +89,7 @@ const RegistroMedico = () => {
                   htmlFor="nombreAnimal"
                   className="block text-lg font-semibold mb-2 text-blue-700"
                 >
-                  <FontAwesomeIcon icon={faPaw} /> Nombre del Animal
+                  Nombre del Animal
                 </label>
                 <input
                   type="text"
@@ -107,7 +107,7 @@ const RegistroMedico = () => {
                   htmlFor="especie"
                   className="block text-lg font-semibold mb-2 text-blue-700"
                 >
-                  <FontAwesomeIcon icon={faClipboardList} /> Especie
+                  Especie
                 </label>
                 <select
                   id="especie"
@@ -118,7 +118,7 @@ const RegistroMedico = () => {
                   required
                 >
                   <option value="">Seleccione la especie</option>
-                  {Object.keys(enfermedadesPorEspecie).map((especie) => (
+                  {especies.map((especie) => (
                     <option key={especie} value={especie}>
                       {especie}
                     </option>
@@ -127,16 +127,16 @@ const RegistroMedico = () => {
               </div>
               <div className="form-group mb-4">
                 <label
-                  htmlFor="fechaConsulta"
+                  htmlFor="fechaChequeo"
                   className="block text-lg font-semibold mb-2 text-blue-700"
                 >
-                  <FontAwesomeIcon icon={faCalendarAlt} /> Fecha de Monitoreo
+                  Fecha del Chequeo
                 </label>
                 <input
                   type="date"
-                  id="fechaConsulta"
-                  name="fechaConsulta"
-                  value={formData.fechaConsulta}
+                  id="fechaChequeo"
+                  name="fechaChequeo"
+                  value={formData.fechaChequeo}
                   onChange={handleChange}
                   className="w-full p-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
@@ -144,36 +144,35 @@ const RegistroMedico = () => {
               </div>
               <div className="form-group mb-4">
                 <label
-                  htmlFor="diagnostico"
+                  htmlFor="resultados"
                   className="block text-lg font-semibold mb-2 text-blue-700"
                 >
-                  <FontAwesomeIcon icon={faNotesMedical} /> Estado de Salud
+                  Resultados
                 </label>
                 <textarea
-                  id="diagnostico"
-                  name="diagnostico"
-                  value={formData.diagnostico}
+                  id="resultados"
+                  name="resultados"
+                  value={formData.resultados}
                   onChange={handleChange}
-                  placeholder="Escriba el diagnóstico"
+                  placeholder="Resultados del Chequeo"
                   className="w-full p-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
               <div className="form-group mb-4">
                 <label
-                  htmlFor="nivelActividad"
+                  htmlFor="notas"
                   className="block text-lg font-semibold mb-2 text-blue-700"
                 >
-                  Nivel de Actividad
+                  Notas Adicionales
                 </label>
                 <textarea
-                  id="nivelActividad"
-                  name="nivelActividad"
-                  value={formData.nivelActividad}
+                  id="notas"
+                  name="notas"
+                  value={formData.notas}
                   onChange={handleChange}
-                  placeholder="Escriba el nivel de actividad"
+                  placeholder="Notas adicionales"
                   className="w-full p-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
                 />
               </div>
             </div>
@@ -183,16 +182,12 @@ const RegistroMedico = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Agregar Registro
+              Agregar Chequeo
             </motion.button>
           </form>
-
-          <div className="mt-8 text-center">
-            <Link
-              to="/registros-medicos"
-              className="text-blue-500 hover:underline"
-            >
-              Ir a los registros médicos
+          <div className="text-center mt-6">
+            <Link to="/chequeos-rutinarios" className="text-blue-500 hover:underline">
+              Ir a Chequeos Rutinarios
             </Link>
           </div>
         </motion.div>
@@ -201,4 +196,4 @@ const RegistroMedico = () => {
   );
 };
 
-export default RegistroMedico;
+export default ChequeoRutinario;

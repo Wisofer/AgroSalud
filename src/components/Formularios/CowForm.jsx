@@ -196,7 +196,7 @@ const CowForm = () => {
                   htmlFor="peso"
                   className="block text-lg font-semibold mb-2 text-green-700"
                 >
-                  <FontAwesomeIcon icon={faWeight} /> Peso
+                  <FontAwesomeIcon icon={faWeight} /> Peso kg
                 </label>
                 <input
                   type="number"

@@ -20,7 +20,10 @@ import Inicio from "./components/Home/Inicio.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
 import Login from "./auth/Login.jsx";
 import NoFound from "./pages/NoFound.jsx";
+import Tratamiento from "./components/tratamiento medico/Tratamiento.jsx"; // Importa el componente Tratamiento
+import Chequeo from "./components/chequeorutinario/chequeo.jsx"; // Importa el componente Chequeo
 import { ProtectedRoute, AuthRoute } from "./Context/AuthRoutes.jsx"; // Asegúrate de que la ruta es correcta
+
 import "./index.css";
 
 const router = createBrowserRouter([
@@ -120,16 +123,6 @@ const router = createBrowserRouter([
       {
         path: "gestion-salud-animal",
         element: <AnimalHealthManagement />,
-        children: [
-          {
-            path: "monitoreo-medico",
-            element: <RegistroMedico />,
-          },
-          {
-            path: "vacunacion",
-            element: <Vacunacion />,
-          },
-        ],
       },
       {
         path: "monitoreo-bienestar-animal",
@@ -146,6 +139,22 @@ const router = createBrowserRouter([
       {
         path: "perfil-animal",
         element: <AnimalProfile />,
+      },
+      {
+        path: "monitoreo-medico",
+        element: <RegistroMedico />,
+      },
+      {
+        path: "vacunacion",
+        element: <Vacunacion />,
+      },
+      {
+        path: "tratamiento", 
+        element: <Tratamiento />,
+      },
+      {
+        path: "chequeos-rutinarios", // Agrega la ruta del chequeo
+        element: <Chequeo />,
       },
       {
         path: "*",

@@ -12,7 +12,7 @@ const PigForm = () => {
   const { usuario } = useAgroSalud();
   const [formData, setFormData] = useState({
     name: '',
-    birthDate: '',
+    meses: '',
     tagNumber: '',
     weight: '',
     gender: '',
@@ -48,7 +48,7 @@ const PigForm = () => {
         .insert([
           {
             nombre: formData.name,
-            meses: calcularMeses(formData.birthDate),
+            meses: parseInt(formData.meses),
             numero_etiqueta: formData.tagNumber,
             peso: parseFloat(formData.weight),
             genero: formData.gender,
@@ -68,15 +68,6 @@ const PigForm = () => {
       console.error('Error al registrar el cerdo:', error);
       setError('Hubo un error al registrar el cerdo. Por favor, inténtalo de nuevo.');
     }
-  };
-
-  const calcularMeses = (fechaNacimiento) => {
-    const fechaActual = new Date();
-    const fechaNac = new Date(fechaNacimiento);
-    let meses = (fechaActual.getFullYear() - fechaNac.getFullYear()) * 12;
-    meses -= fechaNac.getMonth();
-    meses += fechaActual.getMonth();
-    return meses <= 0 ? 0 : meses;
   };
 
   return (
@@ -129,15 +120,16 @@ const PigForm = () => {
                 />
               </div>
               <div className="form-group mb-4">
-                <label htmlFor="birthDate" className="block text-lg font-semibold mb-2 text-pink-700">
-                  <FontAwesomeIcon icon={faCalendarAlt} /> Nacimiento
+                <label htmlFor="meses" className="block text-lg font-semibold mb-2 text-pink-700">
+                  <FontAwesomeIcon icon={faCalendarAlt} /> Edad (meses)
                 </label>
                 <input
-                  type="date"
-                  id="birthDate"
-                  name="birthDate"
-                  value={formData.birthDate}
+                  type="number"
+                  id="meses"
+                  name="meses"
+                  value={formData.meses}
                   onChange={handleChange}
+                  placeholder="Edad en meses"
                   className="w-full p-3 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
                 />
               </div>
@@ -157,7 +149,7 @@ const PigForm = () => {
               </div>
               <div className="form-group mb-4">
                 <label htmlFor="weight" className="block text-lg font-semibold mb-2 text-pink-700">
-                  <FontAwesomeIcon icon={faWeight} /> Peso
+                  <FontAwesomeIcon icon={faWeight} /> Peso kg
                 </label>
                 <input
                   type="number"

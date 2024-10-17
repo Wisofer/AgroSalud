@@ -20,7 +20,7 @@ const GoatForm = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: "",
-    fechaNacimiento: "",
+    meses: "",
     numeroEtiqueta: "",
     peso: "",
     genero: "",
@@ -67,7 +67,7 @@ const GoatForm = () => {
     e.preventDefault();
     const {
       nombre,
-      fechaNacimiento,
+      meses,
       numeroEtiqueta,
       peso,
       genero,
@@ -76,14 +76,13 @@ const GoatForm = () => {
       imagen,
       detalles_adicionales,
     } = formData;
-    const meses = calcularMeses(fechaNacimiento);
 
     const { data, error } = await supabase
       .from("cabras")
       .insert([
         {
           nombre,
-          meses,
+          meses: parseInt(meses),
           numero_etiqueta: numeroEtiqueta,
           peso,
           genero,
@@ -101,15 +100,6 @@ const GoatForm = () => {
       console.log("Cabra insertada con éxito:", data);
       navigate('/dashboard/perfil-animal');
     }
-  };
-
-  const calcularMeses = (fechaNacimiento) => {
-    const fechaActual = new Date();
-    const fechaNac = new Date(fechaNacimiento);
-    let meses = (fechaActual.getFullYear() - fechaNac.getFullYear()) * 12;
-    meses -= fechaNac.getMonth();
-    meses += fechaActual.getMonth();
-    return meses <= 0 ? 0 : meses;
   };
 
   return (
@@ -166,17 +156,20 @@ const GoatForm = () => {
               </div>
               <div className="form-group mb-4">
                 <label
-                  htmlFor="fechaNacimiento"
+                  htmlFor="meses"
                   className="block text-lg font-semibold mb-2 text-yellow-700"
                 >
-                  <FontAwesomeIcon icon={faCalendarAlt} /> Nacimiento
+                  <FontAwesomeIcon icon={faCalendarAlt} /> Edad (meses)
                 </label>
                 <input
-                  type="date"
-                  id="fechaNacimiento"
-                  name="fechaNacimiento"
-                  value={formData.fechaNacimiento}
+                  type="number"
+                  id="meses"
+                  name="meses"
+                  value={formData.meses}
                   onChange={handleChange}
+                  placeholder="Edad en meses"
+                  min="0"
+                  max="360"
                   className="w-full p-3 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
                 />
               </div>
@@ -202,7 +195,7 @@ const GoatForm = () => {
                 htmlFor="peso"
                 className="block text-lg font-semibold mb-2 text-yellow-700"
               >
-                <FontAwesomeIcon icon={faWeight} /> Peso
+                <FontAwesomeIcon icon={faWeight} /> Peso kg
               </label>
               <input
                 type="number"
@@ -229,10 +222,12 @@ const GoatForm = () => {
                 className="w-full p-3 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="">Seleccione</option>
-                <option value="arabe">Árabe</option>
-                <option value="pura_sangre">Pura Sangre</option>
-                <option value="cuarto_de_milla">Cuarto de Milla</option>
-                <option value="andaluz">Andaluz</option>
+                <option value="saanen">Saanen</option>
+                <option value="alpina">Alpina</option>
+                <option value="nubia">Nubia</option>
+                <option value="boer">Boer</option>
+                <option value="criolla">Criolla</option>
+                <option value="lamancha">LaMancha</option>
               </select>
             </div>
             <div className="form-group mb-4">
