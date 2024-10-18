@@ -21,6 +21,7 @@
   import img1 from "../../../public/img/img1.png";
   import { supabase } from "../../supabase/supabase";
   import * as XLSX from "xlsx";
+  import deleteSound from "../../../public/audios/audio3.mp3";
 
   const MAX_LENGTH = 32767;
 
@@ -190,6 +191,7 @@
         fetchAnimales();
         setShowDeleteModal(false);
         setAnimalToDelete(null);
+        new Audio(deleteSound).play();
       }
     };
 

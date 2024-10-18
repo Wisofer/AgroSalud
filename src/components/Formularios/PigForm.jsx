@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPiggyBank, faCalendarAlt, faTag, faWeight, faVenusMars, faClipboardList, faImage } from '@fortawesome/free-solid-svg-icons';
 import { motion } from 'framer-motion';
 import pigImage from '../../../public/img/img4.jpg';
+import audio2 from '../../../public/audios/audio2.mp3';
 import { supabase } from '../../supabase/supabase';
 import { useAgroSalud } from '../../Context/AgroSaludContext';
 import { useNavigate, Link } from 'react-router-dom';
@@ -63,6 +64,12 @@ const PigForm = () => {
       if (error) throw error;
 
       console.log('Cerdo registrado con éxito:', data);
+
+      const audio = new Audio(audio2);
+      audio.play().catch(error => {
+        console.error("Error al reproducir el audio:", error);
+      });
+
       navigate('/dashboard/perfil-animal');
     } catch (error) {
       console.error('Error al registrar el cerdo:', error);

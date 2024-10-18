@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCow,
@@ -14,6 +14,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "../../supabase/supabase";
 import { useAgroSalud } from "../../Context/AgroSaludContext";
 import cowImage from "../../../public/img/img6.jpg";
+import audio2 from "../../../public/audios/audio2.mp3";
 
 const CowForm = () => {
   const navigate = useNavigate();
@@ -89,6 +90,12 @@ const CowForm = () => {
       if (error) throw error;
 
       console.log("Vaca registrada con éxito:", data);
+
+      const audio = new Audio(audio2);
+      audio.play().catch(error => {
+        console.error("Error al reproducir el audio:", error);
+      });
+
       navigate("/dashboard/perfil-animal");
     } catch (error) {
       console.error("Error al registrar la vaca:", error);

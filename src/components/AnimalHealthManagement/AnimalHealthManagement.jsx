@@ -3,9 +3,11 @@ import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeartbeat, faSyringe, faPills, faStethoscope, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
+import audio2 from '../../../public/audios/audio5.mp3'; // Importar el audio
 
 const AnimalHealthManagement = () => {
     const navigate = useNavigate();
+    const audio = new Audio(audio2); // Crear una instancia del audio
 
     // Prefijo de la ruta padre
     const baseRoute = '/dashboard'; // Cambia aquí si el prefijo de la ruta cambia
@@ -19,6 +21,10 @@ const AnimalHealthManagement = () => {
     ];
 
     const handleNavigation = (route) => {
+        // Reproducir el audio al hacer clic
+        audio.play().catch(error => {
+            console.error("Error al reproducir el audio:", error);
+        });
         // Navega a la nueva ruta y reemplaza la entrada en el historial
         navigate(route, { replace: true });
     };

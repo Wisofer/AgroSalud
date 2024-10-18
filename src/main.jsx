@@ -1,4 +1,3 @@
-// main.jsx o index.jsx (según tu configuración)
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -14,7 +13,7 @@ import AnimalWelfareMonitoring from "./components/AnimalWelfareMonitoring/Animal
 import CommunicationCoordination from "./components/CommunicationCoordination/CommunicationCoordination.jsx";
 import DataAutomationAnalysis from "./components/DataAutomationAnalysis/DataAutomationAnalysis.jsx";
 import AnimalProfile from "./components/AnimalProfile/AnimalProfile.jsx";
-import RegistroMedico from "./components/RegistroMedico/RegistroMedico.jsx";
+import MonitoreoMedico from "./components/MonitoreoMedico/MonitoreoMedico.jsx";
 import Vacunacion from "./components/Vacunacion/Vacunacion.jsx";
 import Inicio from "./components/Home/Inicio.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
@@ -22,6 +21,12 @@ import Login from "./auth/Login.jsx";
 import NoFound from "./pages/NoFound.jsx";
 import Tratamiento from "./components/tratamiento medico/Tratamiento.jsx"; // Importa el componente Tratamiento
 import Chequeo from "./components/chequeorutinario/chequeo.jsx"; // Importa el componente Chequeo
+import HistorialMedico from "./components/Historial Medico/HisotorialMedico.jsx"; // Importa el componente Historial Medico
+import ResultadoMonitoreoMedico from "./components/MonitoreoMedico/Resultado-Monitoreo-Medico.jsx"; // Importa el componente Resultado Monitoreo Medico
+import ResultadoVacunacion from "./components/Vacunacion/Resultado-Vacunacion.jsx"; // Importa el componente Resultado Vacunacion
+import ResultadoTratamientoMedico from "./components/tratamiento medico/Resultado-Tratamiento-Medico.jsx"; // Importa el componente Resultado Tratamiento Medico
+import ResultadoChequeoRutinarios from "./components/chequeorutinario/Resultado-Chequeo-Rutinarios.jsx"; // Importa el componente Resultado Chequeo Rutinarios
+import Configuracion from "./components/Configuracion/Configuracion.jsx"; // Importa el componente Configuracion
 import { ProtectedRoute, AuthRoute } from "./Context/AuthRoutes.jsx"; // Asegúrate de que la ruta es correcta
 
 import "./index.css";
@@ -142,7 +147,7 @@ const router = createBrowserRouter([
       },
       {
         path: "monitoreo-medico",
-        element: <RegistroMedico />,
+        element: <MonitoreoMedico />,
       },
       {
         path: "vacunacion",
@@ -155,6 +160,30 @@ const router = createBrowserRouter([
       {
         path: "chequeos-rutinarios", // Agrega la ruta del chequeo
         element: <Chequeo />,
+      },
+      {
+        path: "historial-medico", // Agrega la ruta del historial médico
+        element: <HistorialMedico />,
+      },
+      {
+        path: "resultado-monitoreo-medico", // Agrega la ruta del resultado de monitoreo médico
+        element: <ResultadoMonitoreoMedico />,
+      },
+      {
+        path: "resultado-vacunacion", // Agrega la ruta del resultado de vacunación
+        element: <ResultadoVacunacion />,
+      },
+      {
+        path: "resultado-tratamiento-medico", // Agrega la ruta del resultado de tratamiento médico
+        element: <ResultadoTratamientoMedico />,
+      },
+      {
+        path: "resultado-chequeos-rutinarios", // Agrega la ruta del resultado de chequeos rutinarios
+        element: <ResultadoChequeoRutinarios />,
+      },
+      {
+        path: "configuracion", // Agrega la ruta de configuración
+        element: <Configuracion />,
       },
       {
         path: "*",

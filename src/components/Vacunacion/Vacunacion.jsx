@@ -65,13 +65,13 @@ const Vacunación = () => {
     try {
       const { data, error } = await supabase.from("vacunaciones").insert([
         {
-          nombreAnimal: formData.nombreAnimal,
+          usuario_id: usuario.id,
+          nombre_animal: formData.nombreAnimal,
           especie: formData.especie,
-          fechaVacunacion: formData.fechaVacunacion,
+          fecha_vacunacion: formData.fechaVacunacion,
           vacuna: formData.vacuna,
           detalles_adicionales: formData.detalles_adicionales,
           imagen: formData.imagen,
-          usuario_id: usuario.id,
         },
       ]);
 
@@ -257,7 +257,7 @@ const Vacunación = () => {
           </form>
 
           <div className="mt-8 text-center">
-            <Link to="/dashboard/vacunaciones" className="text-yellow-500 hover:underline">
+            <Link to="/dashboard/resultado-vacunacion" className="text-yellow-500 hover:underline">
               Ir a las vacunaciones
             </Link>
           </div>

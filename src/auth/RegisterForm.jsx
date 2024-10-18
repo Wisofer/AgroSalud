@@ -87,7 +87,9 @@ const RegisterForm = () => {
     { id: 2, nombre: 'Veterinario' },
     { id: 3, nombre: 'Administrador' },
     { id: 4, nombre: 'Técnico Agrícola' },
-    { id: 5, nombre: 'Investigador' }
+    { id: 5, nombre: 'Investigador' },
+    { id: 5, nombre: 'Estudiante' }
+
   ];
 
   return (

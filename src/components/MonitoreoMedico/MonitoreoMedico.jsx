@@ -8,9 +8,13 @@ import {
   faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "../../supabase/supabase";
+import { useAgroSalud } from "../../Context/AgroSaludContext";
 
-const RegistroMedico = () => {
+const MonitoreoMedico = () => {
+  const { usuario } = useAgroSalud();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombreAnimal: "",
     especie: "",
@@ -18,6 +22,7 @@ const RegistroMedico = () => {
     diagnostico: "",
     nivelActividad: "",
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,15 +32,33 @@ const RegistroMedico = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setFormData({
-      nombreAnimal: "",
-      especie: "",
-      fechaConsulta: "",
-      diagnostico: "",
-      nivelActividad: "",
-    });
+    setError(null);
+
+    try {
+      const { data, error } = await supabase.from("monitoreo_medico").insert([
+        {
+          usuario_id: usuario.id,
+          nombre_animal: formData.nombreAnimal,
+          especie: formData.especie,
+          fecha_consulta: formData.fechaConsulta,
+          diagnostico: formData.diagnostico,
+          nivel_actividad: formData.nivelActividad,
+        },
+      ]);
+
+      if (error) throw error;
+
+      console.log("Registro médico agregado con éxito:", data);
+
+      navigate("/registros-medicos");
+    } catch (error) {
+      console.error("Error al agregar el registro médico:", error);
+      setError(
+        "Hubo un error al agregar el registro médico. Por favor, inténtalo de nuevo."
+      );
+    }
   };
 
   const enfermedadesPorEspecie = {
@@ -154,7 +177,7 @@ const RegistroMedico = () => {
                   name="diagnostico"
                   value={formData.diagnostico}
                   onChange={handleChange}
-                  placeholder="Escriba el diagnóstico"
+                  placeholder="Escriba el estado de salud"
                   className="w-full p-3 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
@@ -187,12 +210,18 @@ const RegistroMedico = () => {
             </motion.button>
           </form>
 
+          {error && (
+            <div className="mt-4 text-red-500 text-center">
+              {error}
+            </div>
+          )}
+
           <div className="mt-8 text-center">
             <Link
-              to="/registros-medicos"
+              to="/dashboard/resultado-monitoreo-medico"
               className="text-blue-500 hover:underline"
             >
-              Ir a los registros médicos
+              Ir a los resultados de monitoreo médico
             </Link>
           </div>
         </motion.div>
@@ -201,4 +230,4 @@ const RegistroMedico = () => {
   );
 };
 
-export default RegistroMedico;
+export default MonitoreoMedico;

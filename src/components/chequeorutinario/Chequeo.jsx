@@ -4,8 +4,10 @@ import { faCalendarAlt, faNotesMedical, faClipboardList } from "@fortawesome/fre
 import { motion } from "framer-motion";
 import { supabase } from "../../supabase/supabase";
 import { Link } from "react-router-dom";
+import { useAgroSalud } from "../../Context/AgroSaludContext";
 
 const ChequeoRutinario = () => {
+  const { usuario } = useAgroSalud();
   const [formData, setFormData] = useState({
     nombreAnimal: "",
     especie: "",
@@ -37,7 +39,14 @@ const ChequeoRutinario = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.from('chequeos_rutinarios').insert([formData]);
+    const { data, error } = await supabase.from('chequeos_rutinarios').insert([{
+      usuario_id: usuario.id,
+      nombre_animal: formData.nombreAnimal,
+      especie: formData.especie,
+      fecha_chequeo: formData.fechaChequeo,
+      resultados: formData.resultados,
+      notas: formData.notas,
+    }]);
     if (error) {
       console.error('Error adding chequeo rutinario:', error);
       return;
@@ -186,7 +195,7 @@ const ChequeoRutinario = () => {
             </motion.button>
           </form>
           <div className="text-center mt-6">
-            <Link to="/chequeos-rutinarios" className="text-blue-500 hover:underline">
+            <Link to="/dashboard/resultado-chequeos-rutinarios" className="text-blue-500 hover:underline">
               Ir a Chequeos Rutinarios
             </Link>
           </div>

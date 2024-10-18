@@ -3,8 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSyringe, faCalendarAlt, faNotesMedical } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { supabase } from "../../supabase/supabase";
+import { useAgroSalud } from "../../Context/AgroSaludContext";
+import { Link } from "react-router-dom";
+
 
 const Tratamiento = () => {
+  const { usuario } = useAgroSalud();
   const [formData, setFormData] = useState({
     nombreAnimal: "",
     especie: "",
@@ -37,7 +41,15 @@ const Tratamiento = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.from('tratamientos').insert([formData]);
+    const { data, error } = await supabase.from('tratamientos').insert([{
+      usuario_id: usuario.id,
+      nombre_animal: formData.nombreAnimal,
+      especie: formData.especie,
+      tratamiento: formData.tratamiento,
+      fecha_inicio: formData.fechaInicio,
+      fecha_fin: formData.fechaFin,
+      notas: formData.notas,
+    }]);
     if (error) {
       console.error('Error adding tratamiento:', error);
       return;
@@ -207,12 +219,9 @@ const Tratamiento = () => {
           </form>
 
           <div className="mt-8 text-center">
-            <a
-              href="/ver-tratamientos"
-              className="text-blue-500 hover:underline"
-            >
-              Ver tratamientos
-            </a>
+            <Link to="/dashboard/resultado-tratamiento-medico" className="text-blue-500 hover:underline">
+              Ir a los tratamiento
+            </Link>
           </div>
         </motion.div>
       </motion.div>

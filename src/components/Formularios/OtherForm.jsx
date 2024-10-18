@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { supabase } from "../../supabase/supabase";
 import { useAgroSalud } from "../../Context/AgroSaludContext";
 import { useNavigate, Link } from "react-router-dom";
+import audio2 from "../../../public/audios/audio2.mp3";
 
 const OtherForm = () => {
   const { usuario } = useAgroSalud();
@@ -81,6 +82,12 @@ const OtherForm = () => {
       if (error) throw error;
 
       console.log("Animal registrado con éxito:", data);
+
+      const audio = new Audio(audio2);
+      audio.play().catch(error => {
+        console.error("Error al reproducir el audio:", error);
+      });
+
       navigate("/dashboard/perfil-animal");
     } catch (error) {
       console.error("Error al registrar el animal:", error);
