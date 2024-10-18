@@ -23,6 +23,12 @@ const Inicio = () => {
     cabras: 0,
     otros: 0,
   });
+  const [totalAnimalCounts, setTotalAnimalCounts] = useState({
+    vacas: 0,
+    cerdos: 0,
+    cabras: 0,
+    otros: 0,
+  });
   const [usuarioId, setUsuarioId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [estadisticas, setEstadisticas] = useState({
@@ -87,7 +93,39 @@ const Inicio = () => {
       }
     };
 
+    const fetchTotalAnimalCounts = async () => {
+      try {
+        const { data: vacas, error: vacasError } = await supabase
+          .from("vacas")
+          .select("*");
+        const { data: cerdos, error: cerdosError } = await supabase
+          .from("cerdos")
+          .select("*");
+        const { data: cabras, error: cabrasError } = await supabase
+          .from("cabras")
+          .select("*");
+        const { data: otros, error: otrosError } = await supabase
+          .from("otros_animales")
+          .select("*");
+
+        if (vacasError) throw vacasError;
+        if (cerdosError) throw cerdosError;
+        if (cabrasError) throw cabrasError;
+        if (otrosError) throw otrosError;
+
+        setTotalAnimalCounts({
+          vacas: vacas.length,
+          cerdos: cerdos.length,
+          cabras: cabras.length,
+          otros: otros.length,
+        });
+      } catch (error) {
+        console.error("Error fetching total animal counts:", error);
+      }
+    };
+
     fetchAnimalCounts();
+    fetchTotalAnimalCounts();
   }, [usuarioId]);
 
   useEffect(() => {
@@ -150,6 +188,29 @@ const Inicio = () => {
       {
         label: 'Distribución de Animales',
         data: [animalCounts.vacas, animalCounts.cerdos, animalCounts.cabras, animalCounts.otros],
+        backgroundColor: [
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+        ],
+        borderColor: [
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 99, 132, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const totalData = {
+    labels: ['Vacas', 'Cerdos', 'Cabras', 'Otros'],
+    datasets: [
+      {
+        label: 'Distribución Total de Animales',
+        data: [totalAnimalCounts.vacas, totalAnimalCounts.cerdos, totalAnimalCounts.cabras, totalAnimalCounts.otros],
         backgroundColor: [
           'rgba(54, 162, 235, 0.6)',
           'rgba(255, 99, 132, 0.6)',
@@ -283,13 +344,27 @@ const Inicio = () => {
         {/* Distribución de Animales */}
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Distribución de Animales
+            Distribución de Mis Animales
           </h2>
           {loading ? (
             <DotLoader />
           ) : (
             <div className="h-64">
               <Pie data={data} />
+            </div>
+          )}
+        </div>
+
+        {/* Distribución Total de Animales */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            Distribución Total de Animales en la Plataforma
+          </h2>
+          {loading ? (
+            <DotLoader />
+          ) : (
+            <div className="h-64">
+              <Pie data={totalData} />
             </div>
           )}
         </div>
