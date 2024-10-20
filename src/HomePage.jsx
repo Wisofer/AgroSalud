@@ -12,19 +12,23 @@ import {
   faSignOutAlt,
   faSpinner,
   faTachometerAlt,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import img3 from "../public/img/img3.jpg";
 import img4 from "../public/img/img4.jpg";
 import img5 from "../public/img/img7.jpg";
-import img1 from "../public/img/img1.png";
+import img1 from "../public/img/agrosalud1.png";
 import { supabase } from "./supabase/supabase";
+import { Crown, CreditCard, CalendarDays, CheckCircle2, X } from "lucide-react";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const [showPremiumModal, setShowPremiumModal] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -173,6 +177,133 @@ const HomePage = () => {
           </motion.p>
         </motion.div>
       )}
+      
+      <AnimatePresence>
+        {showWelcomeModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="bg-white p-8 rounded-lg shadow-xl max-w-2xl w-full mx-4"
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-3xl font-bold text-green-600">¡Bienvenido a AgroSalud!</h2>
+                <button onClick={() => setShowWelcomeModal(false)} className="text-gray-500 hover:text-gray-700 text-xl">
+                  <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+              <p className="text-gray-600 text-lg mb-6">Estamos encantados de tenerte aquí. Explora nuestros servicios y descubre cómo podemos ayudarte a cuidar de tus animales.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-green-100 p-4 rounded-lg">
+                  <h3 className="text-xl font-semibold text-green-700 mb-2">Servicios Veterinarios</h3>
+                  <p className="text-gray-700">Accede a nuestro equipo de expertos veterinarios para mantener a tus animales saludables.</p>
+                </div>
+                <div className="bg-blue-100 p-4 rounded-lg">
+                  <h3 className="text-xl font-semibold text-blue-700 mb-2">Gestión de Granja</h3>
+                  <p className="text-gray-700">Utiliza nuestras herramientas para optimizar la gestión de tu granja y aumentar la productividad.</p>
+                </div>
+              </div>
+              <button onClick={() => setShowWelcomeModal(false)} className="mt-8 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-full transition duration-300 w-full">
+                Comenzar a Explorar
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {showPremiumModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black opacity-50"></div>
+          <div className="relative bg-white rounded-lg shadow-lg p-8 sm:max-w-3xl w-full mx-4">
+            <div className="flex flex-col items-center text-center mb-8">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Crown className="h-8 w-8 text-yellow-400" />
+                <h2 className="text-3xl font-bold">Únete a Premium</h2>
+              </div>
+              <p className="text-gray-600 text-lg mb-6">
+                Desbloquea todas las funciones y mejora tu experiencia con AgroSalud Premium
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
+              <div className="border rounded-lg p-6 hover:border-blue-500 transition-colors">
+                <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
+                  <CreditCard className="h-6 w-6 text-blue-500" />
+                  Plan Mensual
+                </h3>
+                <p className="text-3xl font-bold mb-4">
+                  $9.99<span className="text-sm font-normal">/mes</span>
+                </p>
+                <ul className="text-base space-y-3 mb-6">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Acceso completo a todas las funciones
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Soporte prioritario 24/7
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Actualizaciones mensuales
+                  </li>
+                </ul>
+                <button className="w-full mt-4 bg-blue-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors">
+                  Elegir plan mensual
+                </button>
+              </div>
+              <div className="border rounded-lg p-6 hover:border-blue-500 transition-colors relative overflow-hidden">
+                <span className="absolute top-0 right-0 bg-green-500 text-white px-3 py-1 text-sm font-semibold rounded-bl-lg">
+                  Mejor valor
+                </span>
+                <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
+                  <CalendarDays className="h-6 w-6 text-blue-500" />
+                  Plan Anual
+                </h3>
+                <p className="text-3xl font-bold mb-4">
+                  $99.99<span className="text-sm font-normal">/año</span>
+                </p>
+                <ul className="text-base space-y-3 mb-6">
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Todo lo incluido en el plan mensual
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    2 meses gratis (ahorra 16%)
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Acceso anticipado a nuevas características
+                  </li>
+                </ul>
+                <button className="w-full mt-4 bg-blue-500 text-white py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 transition-colors">
+                  Elegir plan anual
+                </button>
+              </div>
+            </div>
+
+            <p className="text-center text-gray-600 mt-6">
+              Todos los planes incluyen una garantía de devolución de dinero de 30 días
+            </p>
+
+            <button
+              className="absolute top-4 right-4 p-2 text-gray-600 hover:bg-gray-200 rounded-full transition-colors"
+              onClick={() => setShowPremiumModal(false)}
+            >
+              <X className="h-6 w-6" />
+              <span className="sr-only">Cerrar</span>
+            </button>
+          </div>
+        </div>
+      )}
+      
       <header className="p-4 flex justify-end">
         <motion.div
           className="relative"

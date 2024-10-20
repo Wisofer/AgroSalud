@@ -271,10 +271,8 @@ const GoatForm = () => {
                 className="w-full p-3 border border-yellow-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 <option value="">Seleccione</option>
-                <option value="carreras">Carreras</option>
-                <option value="salto">Salto</option>
-                <option value="doma">Doma</option>
-                <option value="recreacion">Recreación</option>
+                <option value="produccion_leche">Producción de leche</option>
+                <option value="carne">Carne</option>
               </select>
             </div>
             <div className="form-group mb-4">

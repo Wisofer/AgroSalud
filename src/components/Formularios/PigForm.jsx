@@ -63,7 +63,7 @@ const PigForm = () => {
 
       if (error) throw error;
 
-      console.log('Cerdo registrado con éxito:', data);
+      
 
       const audio = new Audio(audio2);
       audio.play().catch(error => {

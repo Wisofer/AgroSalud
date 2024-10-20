@@ -13,7 +13,6 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [contraseña, setContraseña] = useState('');
   const [confirmarContraseña, setConfirmarContraseña] = useState('');
-  const [rolId, setRolId] = useState('');
   const [departamentoId, setDepartamentoId] = useState('');
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -47,14 +46,13 @@ const RegisterForm = () => {
               apellido,
               email,
               contraseña,
-              rol_id: rolId,
               departamento_id: departamentoId
             }
           ]);
 
         if (error) throw error;
 
-        console.log('Usuario registrado:', data);
+        
         setShowModal(true);
       }
     } catch (error) {
@@ -80,16 +78,6 @@ const RegisterForm = () => {
     { id: 15, nombre: 'Rivas' },
     { id: 16, nombre: 'RACCN' },
     { id: 17, nombre: 'RACCS' }
-  ];
-
-  const roles = [
-    { id: 1, nombre: 'Granjero' },
-    { id: 2, nombre: 'Veterinario' },
-    { id: 3, nombre: 'Administrador' },
-    { id: 4, nombre: 'Técnico Agrícola' },
-    { id: 5, nombre: 'Investigador' },
-    { id: 5, nombre: 'Estudiante' }
-
   ];
 
   return (
@@ -149,7 +137,7 @@ const RegisterForm = () => {
           <div className="relative">
             <FaEnvelope className="absolute top-3 left-3 text-green-500" />
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duración-300"
               type="email"
               placeholder="Correo electrónico"
               value={email}
@@ -161,7 +149,7 @@ const RegisterForm = () => {
           <div className="relative">
             <FaLock className="absolute top-3 left-3 text-green-500" />
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duración-300"
               type="password"
               placeholder="Contraseña"
               value={contraseña}
@@ -173,7 +161,7 @@ const RegisterForm = () => {
           <div className="relative">
             <FaLock className="absolute top-3 left-3 text-green-500" />
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duración-300"
               type="password"
               placeholder="Confirmar Contraseña"
               value={confirmarContraseña}
@@ -182,21 +170,9 @@ const RegisterForm = () => {
             />
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
-              value={rolId}
-              onChange={(e) => setRolId(e.target.value)}
-              required
-            >
-              <option value="">Selecciona rol</option>
-              {roles.map((rol) => (
-                <option key={rol.id} value={rol.id}>{rol.nombre}</option>
-              ))}
-            </select>
-
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duración-300"
               value={departamentoId}
               onChange={(e) => setDepartamentoId(e.target.value)}
               required
@@ -212,7 +188,7 @@ const RegisterForm = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300 text-base"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duración-300 text-base"
           >
             Registrarse
           </motion.button>
@@ -220,7 +196,7 @@ const RegisterForm = () => {
         
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">¿Ya tienes una cuenta?</p>
-          <a href="/login" className="text-sm text-green-600 hover:text-green-800 font-bold transition duration-300">Inicia sesión aquí</a>
+          <a href="/login" className="text-sm text-green-600 hover:text-green-800 font-bold transition duración-300">Inicia sesión aquí</a>
         </div>
       </motion.div>
 
@@ -245,7 +221,7 @@ const RegisterForm = () => {
                   setShowModal(false);
                   navigate('/login');
                 }}
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duración-300"
               >
                 Entendido
               </button>

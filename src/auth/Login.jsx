@@ -28,7 +28,6 @@ const Login = () => {
 
       if (error) throw error;
 
-      console.log('Usuario autenticado:', data);
       setTimeout(() => {
         setShowLoader(false);
         navigate('/');
@@ -87,7 +86,7 @@ const Login = () => {
           <div className="relative">
             <FaEnvelope className="absolute top-3 left-3 text-green-500" />
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duración-300"
               type="email"
               placeholder="Correo electrónico"
               value={email}
@@ -99,7 +98,7 @@ const Login = () => {
           <div className="relative">
             <FaLock className="absolute top-3 left-3 text-green-500" />
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duration-300"
+              className="shadow appearance-none border rounded w-full py-2 px-3 pl-10 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-green-500 transition duración-300"
               type="password"
               placeholder="Contraseña"
               value={password}
@@ -112,7 +111,7 @@ const Login = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duration-300 text-base"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full transition duración-300 text-base"
             disabled={isLoading}
           >
             {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
@@ -120,12 +119,12 @@ const Login = () => {
         </form>
         
         <div className="mt-4 text-center">
-          <a href="#" className="text-sm text-green-600 hover:text-green-800 transition duration-300">¿Olvidaste tu contraseña?</a>
+          <a href="#" className="text-sm text-green-600 hover:text-green-800 transition duración-300">¿Olvidaste tu contraseña?</a>
         </div>
         
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">¿No tienes una cuenta?</p>
-          <a href="/registro" className="text-sm text-green-600 hover:text-green-800 font-bold transition duration-300">Regístrate aquí</a>
+          <a href="/registro" className="text-sm text-green-600 hover:text-green-800 font-bold transition duración-300">Regístrate aquí</a>
         </div>
       </motion.div>
     </div>

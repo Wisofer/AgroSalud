@@ -89,7 +89,7 @@ const CowForm = () => {
 
       if (error) throw error;
 
-      console.log("Vaca registrada con éxito:", data);
+      
 
       const audio = new Audio(audio2);
       audio.play().catch(error => {

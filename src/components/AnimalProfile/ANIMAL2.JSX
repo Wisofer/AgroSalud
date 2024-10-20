@@ -52,6 +52,9 @@ const AnimalProfile = () => {
       }
       if (user) {
         setUsuarioId(user.id);
+        
+      } else {
+        console.log("No hay usuario autenticado");
       }
     };
     obtenerUsuarioId();
@@ -75,6 +78,7 @@ const AnimalProfile = () => {
     if (error) {
       console.error("Error fetching animales:", error);
     } else {
+      console.log("Animales obtenidos:", data);
       setAnimales(data);
     }
     setTimeout(() => {

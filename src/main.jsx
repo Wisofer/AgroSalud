@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AgroSaludProvider } from "./Context/AgroSaludContext.jsx"; // Asegúrate de que la ruta es correcta
+import { AgroSaludProvider } from "./Context/AgroSaludContext.jsx";
 import HomePage from "./HomePage.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import CowForm from "./components/Formularios/CowForm.jsx";
@@ -9,7 +9,6 @@ import PigForm from "./components/Formularios/PigForm.jsx";
 import GoatForm from "./components/Formularios/GoatForm.jsx";
 import OtherForm from "./components/Formularios/OtherForm.jsx";
 import AnimalHealthManagement from "./components/AnimalHealthManagement/AnimalHealthManagement.jsx";
-import AnimalWelfareMonitoring from "./components/AnimalWelfareMonitoring/AnimalWelfareMonitoring.jsx";
 import CommunicationCoordination from "./components/CommunicationCoordination/CommunicationCoordination.jsx";
 import DataAutomationAnalysis from "./components/DataAutomationAnalysis/DataAutomationAnalysis.jsx";
 import AnimalProfile from "./components/AnimalProfile/AnimalProfile.jsx";
@@ -19,15 +18,20 @@ import Inicio from "./components/Home/Inicio.jsx";
 import RegisterForm from "./auth/RegisterForm.jsx";
 import Login from "./auth/Login.jsx";
 import NoFound from "./pages/NoFound.jsx";
-import Tratamiento from "./components/tratamiento medico/Tratamiento.jsx"; // Importa el componente Tratamiento
-import Chequeo from "./components/chequeorutinario/chequeo.jsx"; // Importa el componente Chequeo
-import HistorialMedico from "./components/Historial Medico/HisotorialMedico.jsx"; // Importa el componente Historial Medico
-import ResultadoMonitoreoMedico from "./components/MonitoreoMedico/Resultado-Monitoreo-Medico.jsx"; // Importa el componente Resultado Monitoreo Medico
-import ResultadoVacunacion from "./components/Vacunacion/Resultado-Vacunacion.jsx"; // Importa el componente Resultado Vacunacion
-import ResultadoTratamientoMedico from "./components/tratamiento medico/Resultado-Tratamiento-Medico.jsx"; // Importa el componente Resultado Tratamiento Medico
-import ResultadoChequeoRutinarios from "./components/chequeorutinario/Resultado-Chequeo-Rutinarios.jsx"; // Importa el componente Resultado Chequeo Rutinarios
-import Configuracion from "./components/Configuracion/Configuracion.jsx"; // Importa el componente Configuracion
-import { ProtectedRoute, AuthRoute } from "./Context/AuthRoutes.jsx"; // Asegúrate de que la ruta es correcta
+import Tratamiento from "./components/tratamiento medico/Tratamiento.jsx"; 
+import Chequeo from "./components/chequeorutinario/chequeo.jsx"; 
+import HistorialMedico from "./components/Historial Medico/HisotorialMedico.jsx"; 
+import ResultadoMonitoreoMedico from "./components/MonitoreoMedico/Resultado-Monitoreo-Medico.jsx"; 
+import ResultadoVacunacion from "./components/Vacunacion/Resultado-Vacunacion.jsx"; 
+import ResultadoTratamientoMedico from "./components/tratamiento medico/Resultado-Tratamiento-Medico.jsx"; 
+import ResultadoChequeoRutinarios from "./components/chequeorutinario/Resultado-Chequeo-Rutinarios.jsx"; 
+import Configuracion from "./components/Configuracion/Configuracion.jsx"; 
+import Recomendaciones from "./components/Recomendaciones/Recomendaciones.jsx";
+import Cerdos from "./components/Nutricion/Cerdos.jsx";
+import Vacas from "./components/Nutricion/Vacas.jsx";
+import Cabras from "./components/Nutricion/Cabras.jsx";
+import AcercaDeNosotros from "./components/Acerca/Acerca-de-Nosotros.jsx";
+import { ProtectedRoute, AuthRoute } from "./Context/AuthRoutes.jsx"; 
 
 import "./index.css";
 
@@ -130,10 +134,6 @@ const router = createBrowserRouter([
         element: <AnimalHealthManagement />,
       },
       {
-        path: "monitoreo-bienestar-animal",
-        element: <AnimalWelfareMonitoring />,
-      },
-      {
         path: "comunicacion-coordinacion",
         element: <CommunicationCoordination />,
       },
@@ -158,32 +158,52 @@ const router = createBrowserRouter([
         element: <Tratamiento />,
       },
       {
-        path: "chequeos-rutinarios", // Agrega la ruta del chequeo
+        path: "chequeos-rutinarios",
         element: <Chequeo />,
       },
       {
-        path: "historial-medico", // Agrega la ruta del historial médico
+        path: "historial-medico",
         element: <HistorialMedico />,
       },
       {
-        path: "resultado-monitoreo-medico", // Agrega la ruta del resultado de monitoreo médico
+        path: "resultado-monitoreo-medico",
         element: <ResultadoMonitoreoMedico />,
       },
       {
-        path: "resultado-vacunacion", // Agrega la ruta del resultado de vacunación
+        path: "resultado-vacunacion",
         element: <ResultadoVacunacion />,
       },
       {
-        path: "resultado-tratamiento-medico", // Agrega la ruta del resultado de tratamiento médico
+        path: "resultado-tratamiento-medico",
         element: <ResultadoTratamientoMedico />,
       },
       {
-        path: "resultado-chequeos-rutinarios", // Agrega la ruta del resultado de chequeos rutinarios
+        path: "resultado-chequeos-rutinarios",
         element: <ResultadoChequeoRutinarios />,
       },
       {
-        path: "configuracion", // Agrega la ruta de configuración
+        path: "configuracion",
         element: <Configuracion />,
+      },
+      {
+        path: "recomendaciones",
+        element: <Recomendaciones />,
+      },
+      {
+        path: "cerdos",
+        element: <Cerdos />,
+      },
+      {
+        path: "vacas",
+        element: <Vacas />,
+      },
+      {
+        path: "cabras",
+        element: <Cabras />,
+      },
+      {
+        path: "acerca-de-nosotros",
+        element: <AcercaDeNosotros />,
       },
       {
         path: "*",
